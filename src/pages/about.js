@@ -1,9 +1,5 @@
 import React from "react"
-
 import PageHeader from "../components/PageHeader"
-import CategoriesList from "../components/CategoriesList"
-import ResourceItem from "../components/ResourceItem";
-import ResourceList from "../components/ResourceList";
 
 export default () => (
   <>

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import styled from 'styled-components';
 
 import img1 from '../assets/item1.png'
-import img2 from '../assets/item2.png'
 
 const ResourceItemStyle = styled.div`
   position: relative;
@@ -87,25 +86,25 @@ const ResourceItemStyle = styled.div`
 
 class ResourceItem extends Component {
   render() {
-    const {node: { excerpt, frontmatter } } = this.props.model
-    
-    const tags = frontmatter.tags.split(",")
+    console.log(this.props.model)
 
-    return <ResourceItemStyle>
+    const {excerpt, id, tags, title, href} = this.props.model
+    
+    return <ResourceItemStyle data-id={id}>
         <header>
-          <img src={img1} alt="#" />
+          <img src={img1} alt="#"/>
         </header>
-        <h2>{frontmatter.title}</h2>
+        <h2>{title}</h2>
         <p>{excerpt}</p>
         <div className="tags-list">
           {tags.map((t, i) => (
-            <a href="#" key={i} className="tag">
+            <a href={href} key={i} className="tag">
               {t}
             </a>
           ))}
         </div>
         <footer>
-          <a href="#">Check it out !</a>
+          <a href={href}>Check it out !</a>
         </footer>
       </ResourceItemStyle>;
   }

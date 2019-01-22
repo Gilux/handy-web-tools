@@ -23,7 +23,7 @@ class PageHeader extends Component {
   render() {
     return <HeaderStyle>
         <div className="container">
-          <Link to="/" className="logo">
+          <Link to="/" className="logo" onClick={() => this.props.resetQuery()}>
             <img src={logo} alt="Logo" />
           </Link>
           <nav className="main-nav">

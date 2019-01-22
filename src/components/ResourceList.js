@@ -10,7 +10,6 @@ const ResourceListStyle = styled.div`
 
 class ResourceList extends Component {
   render() {
-    console.log(this.props.resources)
     return <ResourceListStyle>
       {this.props.resources.map((obj, i) => <ResourceItem model={obj} key={i} />)}
       </ResourceListStyle>;

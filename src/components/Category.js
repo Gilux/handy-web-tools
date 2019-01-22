@@ -18,8 +18,8 @@ const CategoryStyle = styled.a`
 
 class Category extends Component {
   render() {
-    return <CategoryStyle href="#" class="category-item">
-        Category
+    return <CategoryStyle href="#" className="category-item" onClick={() => this.props.searchFunc(this.props.cat)}>
+        {this.props.cat}
       </CategoryStyle>;
   }
 }

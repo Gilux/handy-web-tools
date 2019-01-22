@@ -12,6 +12,7 @@
     "test": "echo \"Write tests! -> https://gatsby.app/unit-testing\""
   },
   "dependencies": {
+    "@gatsby-contrib/gatsby-plugin-elasticlunr-search": "^2.1.1",
     "gatsby": "^2.0.76",
     "gatsby-plugin-local-search": "^0.1.4",
     "gatsby-source-filesystem": "^2.0.16",
@@ -26,5 +27,11 @@
   },
   "bugs": {
     "url": "https://github.com/gatsbyjs/gatsby/issues"
+  },
+  "devDependencies": {
+    "@andrew-codes/gatsby-plugin-elasticlunr-search": "^1.0.4"
+  },
+  "resolutions": {
+    "graphql": "0.13.2"
   }
 }

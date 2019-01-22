@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import Category from './Category';
-
 import styled from "styled-components";
+
+import Category from './Category';
 
 const CategoriesListStyle = styled.div`
   display: flex;
@@ -9,23 +9,14 @@ const CategoriesListStyle = styled.div`
   justify-content: space-between;
 `;
 
-
 class CategoriesList extends Component {
+  
   render() {
+    console.log(this.props.categories)
     return <CategoriesListStyle>
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
-      <Category />
+      {this.props.categories.map((c, i) => (
+        <Category key={i} cat={c} searchFunc={ this.props.searchFunc }/>
+      ))}
     </CategoriesListStyle>
   }
 }
