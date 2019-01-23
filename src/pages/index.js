@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "gatsby";
 import {Index} from 'elasticlunr';
+import { Helmet } from "react-helmet";
 
 import PageHeader from "../components/PageHeader"
 import ResourceList from "../components/ResourceList";
@@ -65,9 +66,13 @@ class Main extends Component {
 
   render() {
     const content = (this.state.query === "") ? <CategoriesList categories={this.state.categories} searchFunc={ this.search } /> : <ResourceList resources={this.state.results} />
-    return (
-      <>
-        <PageHeader resetQuery={ this.resetQuery } />
+    return <>
+        <Helmet>
+          <title>Handy Web Resources</title>
+          <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" />
+        </Helmet>
+
+        <PageHeader resetQuery={this.resetQuery} />
 
         <main>
           <div className="container">
@@ -77,19 +82,17 @@ class Main extends Component {
 
             <div id="search-bar">
               <form>
-                <input type="text" value={this.state.query} onChange={this.onSearch} placeholder="Search..."/>
+                <input type="text" value={this.state.query} onChange={this.onSearch} placeholder="Search..." />
               </form>
             </div>
 
-            { content }
-
+            {content}
           </div>
         </main>
-      </>)
+      </>;
   }
 
   resetQuery = () => {
-    console.log("lelelel")
     this.setState({query: ``})
   }
 
