@@ -89,6 +89,8 @@ class ResourceItem extends Component {
     console.log(this.props.model)
 
     const {excerpt, id, tags, title, href, thumbnail} = this.props.model
+
+    console.log(thumbnail)
     
     return <ResourceItemStyle data-id={id}>
         <header>

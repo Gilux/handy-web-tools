@@ -18,7 +18,7 @@ module.exports = {
       resolve: `@gatsby-contrib/gatsby-plugin-elasticlunr-search`,
       options: {
         // Fields to index
-        fields: [`title`, `tags`, `href`, `excerpt`, `id`],
+        fields: [`title`, `tags`, `href`, `thumbnail`, `excerpt`, `id`],
         // How to resolve each field`s value for a supported node type
         resolvers: {
           // For any node of type MarkdownRemark, list how to resolve the fields` values
@@ -26,6 +26,7 @@ module.exports = {
             title: node => node.frontmatter.title,
             tags: node => node.frontmatter.tags,
             href: node => node.frontmatter.href,
+            thumbnail: node => node.frontmatter.thumbnail,
             excerpt: node => {
               const excerptLength = 300; // Hard coded excerpt length
               let excerpt = "";
