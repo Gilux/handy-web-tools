@@ -36,15 +36,13 @@ class Main extends Component {
     console.log(this.index.toJSON())
     const docs = this.index.toJSON().documentStore.docs
     Object.keys(docs).forEach((k) => {
-      docs[k].tags.forEach(t => {
+      docs[k].tags.split(",").forEach(t => {
         if(!categories[t]) { 
           categories[t] = 0
         }
         categories[t]++
       })
     })
-
-    console.log(categories)
     var sortable = [];
     for (var c in categories) {
       sortable.push([c, categories[c]]);
@@ -57,10 +55,6 @@ class Main extends Component {
     sortable.forEach(s => {
       output.push(s[0])
     })
-
-    console.log(output)
-
-
     this.setState({ categories: output });
   }
 
@@ -107,7 +101,6 @@ class Main extends Component {
 
   search = (query) => {
     this.index = this.getOrCreateIndex();
-    console.log(this.index.toJSON().documentStore.docs)
     this.setState({
         query,
         // Query the index with search string to get an [] of IDs

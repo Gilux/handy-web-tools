@@ -97,7 +97,7 @@ class ResourceItem extends Component {
         <h2>{title}</h2>
         <p>{excerpt}</p>
         <div className="tags-list">
-          {tags.map((t, i) => (
+          {tags.split(",").map((t, i) => (
             <a href={href} key={i} className="tag">
               {t}
             </a>

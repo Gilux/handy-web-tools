@@ -4,8 +4,8 @@ import styled from "styled-components";
 import ResourceItem from "../components/ResourceItem";
 
 const ResourceListStyle = styled.div`
-  column-count: 3;
-  column-gap: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
 `;
 
 class ResourceList extends Component {
