@@ -88,11 +88,11 @@ class ResourceItem extends Component {
   render() {
     console.log(this.props.model)
 
-    const {excerpt, id, tags, title, href} = this.props.model
+    const {excerpt, id, tags, title, href, thumbnail} = this.props.model
     
     return <ResourceItemStyle data-id={id}>
         <header>
-          <img src={img1} alt="#"/>
+        <img src={thumbnail} alt="#"/>
         </header>
         <h2>{title}</h2>
         <p>{excerpt}</p>
