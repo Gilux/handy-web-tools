@@ -33,7 +33,6 @@ class Main extends Component {
   getMostFrequentTags() {
     this.index = this.getOrCreateIndex();
     let categories = {};
-    console.log(this.index.toJSON())
     const docs = this.index.toJSON().documentStore.docs
     Object.keys(docs).forEach((k) => {
       docs[k].tags.split(",").forEach(t => {
@@ -59,7 +58,7 @@ class Main extends Component {
   }
 
   render() {
-    const content = (this.state.query === "") ? <CategoriesList categories={this.state.categories} searchFunc={ this.search } /> : <ResourceList resources={this.state.results} />
+    const content = (this.state.query === "") ? <CategoriesList categories={this.state.categories} searchFunc={this.search} /> : <ResourceList resources={this.state.results} searchFunc={this.search} />
     return <>
         <Helmet>
           <title>Handy Web Resources</title>

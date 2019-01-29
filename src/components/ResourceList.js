@@ -4,14 +4,15 @@ import styled from "styled-components";
 import ResourceItem from "../components/ResourceItem";
 
 const ResourceListStyle = styled.div`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
 `;
 
 class ResourceList extends Component {
   render() {
     return <ResourceListStyle>
-      {this.props.resources.map((obj, i) => <ResourceItem model={obj} key={i} />)}
+      {this.props.resources.map((obj, i) => <ResourceItem model={obj} key={i} searchFunc={this.props.searchFunc}/>)}
       </ResourceListStyle>;
   }
 }

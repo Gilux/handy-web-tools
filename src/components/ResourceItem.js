@@ -5,9 +5,7 @@ import img1 from '../assets/item1.png'
 
 const ResourceItemStyle = styled.div`
   position: relative;
-  width: 100%;
-
-  page-break-inside: avoid;
+  width: 30%;
 
   box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.16);
   margin-bottom: 30px;
@@ -69,7 +67,7 @@ const ResourceItemStyle = styled.div`
     width: 100%;
     height: 50px;
 
-    padding: 0 20px;
+    padding: 0 20px 20px 0;
 
     display: flex;
     align-items: center;
@@ -86,13 +84,11 @@ const ResourceItemStyle = styled.div`
 
 class ResourceItem extends Component {
   render() {
-    console.log(this.props.model)
-
     const {excerpt, id, tags, title, href, thumbnail} = this.props.model
-
-    console.log(thumbnail)
     
     return <ResourceItemStyle data-id={id}>
+    <div>
+
         <header>
         <img src={thumbnail} alt="#"/>
         </header>
@@ -100,7 +96,7 @@ class ResourceItem extends Component {
         <p>{excerpt}</p>
         <div className="tags-list">
           {tags.split(",").map((t, i) => (
-            <a href={href} key={i} className="tag">
+            <a key={i} className="tag" onClick={() => this.props.searchFunc(t)}>
               {t}
             </a>
           ))}
@@ -108,6 +104,7 @@ class ResourceItem extends Component {
         <footer>
           <a href={href}>Check it out !</a>
         </footer>
+          </div>
       </ResourceItemStyle>;
   }
 }

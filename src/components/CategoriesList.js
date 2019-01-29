@@ -12,7 +12,6 @@ const CategoriesListStyle = styled.div`
 class CategoriesList extends Component {
   
   render() {
-    console.log(this.props.categories)
     return <CategoriesListStyle>
       {this.props.categories.map((c, i) => (
         <Category key={i} cat={c} searchFunc={ this.props.searchFunc }/>
