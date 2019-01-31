@@ -1,118 +1,77 @@
 import React, { Component } from "react"
-import { graphql } from "gatsby";
-import {Index} from 'elasticlunr';
-import { Helmet } from "react-helmet";
+import { Helmet } from "react-helmet"
+import { InstantSearch, connectStateResults, connectSearchBox } from 'react-instantsearch-dom'
 
 import PageHeader from "../components/PageHeader"
-import ResourceList from "../components/ResourceList";
-import CategoriesList from "../components/CategoriesList";
+import ResourceList from "../components/ResourceList"
 
-export const query = graphql`query
-SearchIndexExampleQuery {
-    siteSearchIndex {
-      index
-    }
-}`
+const Content = connectStateResults(({ searchState, searchResults, onChangeFunc }) => {
+  const hasResults = searchResults && searchResults.nbHits !== 0;
+  if(hasResults) {
+    return (
+      <ResourceList results={searchResults.hits} onChangeFunc={onChangeFunc} />
+    )
+  }
+  return <div>No results has been found for {searchState.query}</div>
+});
+
+const Search = connectSearchBox(({ onFocus, onBlur, currentRefinement, refine, onChangeFunc }) => {
+  return (
+    <input
+      type="text"
+      placeholder="Search"
+      value={currentRefinement}
+      onChange={e => {
+        onChangeFunc(e.target.value)
+      }}
+    />
+  )
+})
 
 class Main extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      query: ``,
+      search: {},
       results: [],
       categories: []
     };
-
-  }
-  
-  componentDidMount() {
-    this.getMostFrequentTags()
-  }
-
-  getMostFrequentTags() {
-    this.index = this.getOrCreateIndex();
-    let categories = {};
-    const docs = this.index.toJSON().documentStore.docs
-    Object.keys(docs).forEach((k) => {
-      docs[k].tags.split(",").forEach(t => {
-        if(!categories[t]) { 
-          categories[t] = 0
-        }
-        categories[t]++
-      })
-    })
-    var sortable = [];
-    for (var c in categories) {
-      sortable.push([c, categories[c]]);
-    }
-    sortable.sort(function (a, b) {
-      return b[1] - a[1];
-    });
-
-    let output = []
-    sortable.forEach(s => {
-      output.push(s[0])
-    })
-    this.setState({ categories: output });
   }
 
   render() {
-    const content = (this.state.query === "") ? <CategoriesList categories={this.state.categories} searchFunc={this.search} /> : <ResourceList resources={this.state.results} searchFunc={this.search} />
     return <>
+        {/* Add elements to <head> with Helmet */}
         <Helmet>
           <title>Handy Web Resources</title>
           <script src="https://identity.netlify.com/v1/netlify-identity-widget.js" />
+          <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/instantsearch.css@7.0.0/themes/algolia-min.css" />
         </Helmet>
 
-        <PageHeader resetQuery={this.resetQuery} />
-
-        <main>
-          <div className="container">
-            <h1 className="text-center">
-              A selection of the finest <span>open web resources</span>
-            </h1>
-
-            <div id="search-bar">
-              <form>
-                <input type="text" value={this.state.query} onChange={this.onSearch} placeholder="Search..." />
-              </form>
+        <InstantSearch
+          appId={process.env.GATSBY_ALGOLIA_APP_ID}
+          apiKey={process.env.GATSBY_ALGOLIA_SEARCH_ID}
+          indexName="webresources"
+          searchState={this.state.search}
+        >
+          <PageHeader resetQuery={this.resetQuery} />
+          <main>
+            <div className="container">
+              <h1 className="text-center">
+                A selection of the finest <span>open web resources</span>
+              </h1>
+              <Search onChangeFunc={(val) => this.resetQuery(val)}/>
+              <Content onChangeFunc={(val) => this.resetQuery(val)} />
             </div>
-
-            {content}
-          </div>
-        </main>
+          </main>
+        </InstantSearch>
       </>;
   }
 
-  resetQuery = () => {
-    this.setState({query: ``})
+  resetQuery = (val = "") => {
+    console.log(val)
+    this.setState({search: {query: val}})
   }
-
-  getOrCreateIndex = () => this.index
-        ? this.index
-        // Create an elastic lunr index and hydrate with graphql query results
-        : Index.load(this.props.data.siteSearchIndex.index);
-
-  onSearch = (evt) => {
-    this.search(evt.target.value)
-  }
-
-  search = (query) => {
-    this.index = this.getOrCreateIndex();
-    this.setState({
-        query,
-        // Query the index with search string to get an [] of IDs
-        results: this.index.search(query, {expand: true})
-            // Map over each ID and return the full document
-            .map(({
-            ref,
-            }) => {
-              return this.index.documentStore.getDoc(ref)
-            }),
-    });
-  }
-
+  
 }
 
 export default Main

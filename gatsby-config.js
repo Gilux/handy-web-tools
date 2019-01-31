@@ -1,6 +1,42 @@
 const remark = require("remark");
 const visit = require("unist-util-visit");
 
+require("dotenv").config();
+
+const myQuery = `{
+  allMarkdownRemark {
+    edges {
+      node {
+        id
+        excerpt
+        frontmatter {
+          title
+          tags
+          href
+          thumbnail
+        }
+      }
+    }
+  }
+}`;
+
+const queries = [
+  {
+    query: myQuery,
+    transformer: ({ data }) => data.allMarkdownRemark.edges.map(({ node }) => {
+      node.title = node.frontmatter.title
+      node.tags = node.frontmatter.tags.split(",")
+      node.href = node.frontmatter.href
+      node.thumbnail = node.frontmatter.thumbnail
+      delete node.frontmatter
+      return node
+    }), // optional
+    settings: {
+      // optional, any index settings
+    }
+  }
+];
+
 module.exports = {
   siteMetadata: {
     title: `Handy Web Tools`
@@ -14,30 +50,20 @@ module.exports = {
       }
     },
     `gatsby-transformer-remark`,
+    `gatsby-plugin-react-helmet`,
     {
-      resolve: `@gatsby-contrib/gatsby-plugin-elasticlunr-search`,
+      resolve: `gatsby-plugin-algolia`,
       options: {
-        // Fields to index
-        fields: [`title`, `tags`, `excerpt`],
-        // How to resolve each field`s value for a supported node type
-        resolvers: {
-          // For any node of type MarkdownRemark, list how to resolve the fields` values
-          MarkdownRemark: {
-            title: node => node.frontmatter.title,
-            tags: node => node.frontmatter.tags,
-            excerpt: node => {
-              const excerptLength = 300; // Hard coded excerpt length
-              let excerpt = "";
-              const tree = remark().parse(node.rawMarkdownBody);
-              visit(tree, "text", node => {
-                excerpt += node.value;
-              });
-              return excerpt.slice(0, excerptLength);
-            }
-          }
-        }
+        appId: process.env.GATSBY_ALGOLIA_APP_ID,
+        apiKey: process.env.ALGOLIA_ADMIN_KEY,
+        indexName: process.env.ALGOLIA_INDEX_NAME, // for all queries
+        queries,
+        chunkSize: 10000 // default: 1000
       }
-    },
-    `gatsby-plugin-react-helmet`
+    }
   ]
 };
+
+
+
+

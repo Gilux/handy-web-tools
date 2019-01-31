@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 
-import img1 from '../assets/item1.png'
-
 const ResourceItemStyle = styled.div`
   position: relative;
   width: 30%;
@@ -47,7 +45,7 @@ const ResourceItemStyle = styled.div`
     flex-wrap: wrap;
     padding: 15px 20px;
 
-    a {
+    .tag {
       background-color: #f1f1f1;
       color: #707070;
       border-radius: 45px;
@@ -57,6 +55,8 @@ const ResourceItemStyle = styled.div`
       font-weight: 600;
       margin-right: 15px;
       margin-bottom: 10px;
+      cursor: pointer;
+      border: none;
     }
   }
 
@@ -86,26 +86,27 @@ class ResourceItem extends Component {
   render() {
     const {excerpt, id, tags, title, href, thumbnail} = this.props.model
     
-    return <ResourceItemStyle data-id={id}>
-    <div>
-
-        <header>
-        <img src={thumbnail} alt="#"/>
-        </header>
-        <h2>{title}</h2>
-        <p>{excerpt}</p>
-        <div className="tags-list">
-          {tags.split(",").map((t, i) => (
-            <a key={i} className="tag" onClick={() => this.props.searchFunc(t)}>
-              {t}
-            </a>
-          ))}
-        </div>
-        <footer>
-          <a href={href}>Check it out !</a>
-        </footer>
+    return (
+      <ResourceItemStyle data-id={id}>
+        <div>
+          <header>
+            <img src={thumbnail} alt="#"/>
+          </header>
+          <h2>{title}</h2>
+          <p>{excerpt}</p>
+          <div className="tags-list">
+            {tags.map((t, i) => (
+              <button key={i} className="tag" onClick={() => this.props.onChangeFunc(t)}>
+                {t}
+              </button>
+            ))}
           </div>
-      </ResourceItemStyle>;
+          <footer>
+            <a href={href}>Check it out !</a>
+          </footer>
+        </div>
+      </ResourceItemStyle>
+    )
   }
 }
 
