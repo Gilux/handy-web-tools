@@ -28,7 +28,6 @@ class PageHeader extends Component {
           </Link>
           <nav className="main-nav">
             <Link to="/about/">About</Link>
-            <Link to="/contribute/">Contribute</Link>
           </nav>
         </div>
       </HeaderStyle>;
