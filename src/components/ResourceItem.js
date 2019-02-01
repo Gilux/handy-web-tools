@@ -15,6 +15,8 @@ const ResourceItemStyle = styled.div`
       display: block;
       width: 100%;
     }
+
+    border-bottom: 1px solid #DDD;
   }
 
   h2 {
